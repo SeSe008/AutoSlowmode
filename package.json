@@ -1,0 +1,17 @@
+{
+  "name": "autoslowmode",
+  "version": "1.0.0",
+  "description": "A Discord Bot to create automatic timeouts for spammers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "se008",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.14.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0"
+  }
+}
