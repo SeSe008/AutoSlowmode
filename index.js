@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
-
+const deletemsgjson = require('./delete.js');
 const global = require('./global.js');
 
 const client = new Client({ intents: [
@@ -41,7 +41,6 @@ for (const file of eventFiles) {
 	}
 }
 
-const data = fs.readFileSync('./messages.json');
-console.log(JSON.parse(data));
+deletemsgjson.deleteoldmsg();
 
 client.login(token);

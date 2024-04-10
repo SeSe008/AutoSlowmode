@@ -1,4 +1,6 @@
 module.exports = {
     timeoutLength: 5,
-    logChannel: undefined
+    logChannel: undefined,
+    checkingTime: 2000,
+    messages: {}
 };
