@@ -26,21 +26,20 @@ async function modifyGuildIncidentActions(guildId, dmsDisabledUntil) {
         if (!response.ok) {
             logError(guildId);
             throw new Error(`Failed to modify incident actions: ${response.statusText}`);
+        } else {
+            console.log(`Enabled security actions for ${guildId}`);
         }
         return response.json();
     } catch (error) {
         console.error(`Error modifying incident actions for guild ${guildId}:`, error);
         logError(guildId);
-        throw error;
     }
 }
 
 async function automateIncidentActions() {
     global.guilds.forEach(async guildId => {
         const dmsDisabledUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
-        const response = await modifyGuildIncidentActions(guildId, dmsDisabledUntil);
-
-        console.log(response);
+        await modifyGuildIncidentActions(guildId, dmsDisabledUntil);
 
         if (global.logChannel[guildId]) {
             global.logChannel[guildId].send(`DMs disabled until: ${response.dms_disabled_until}`);    
