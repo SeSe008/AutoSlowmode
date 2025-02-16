@@ -1,5 +1,6 @@
+require('dotenv').config();
+
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-const { token } = require("../config.json");
 const global = require('../global.js');
 
 function logError(guildId) {
@@ -15,7 +16,7 @@ async function modifyGuildIncidentActions(guildId, dmsDisabledUntil) {
         const response = await fetch(`https://discord.com/api/v10/guilds/${guildId}/incident-actions`, {
             method: 'PUT',
             headers: {
-                'Authorization': `Bot ${token}`,
+                'Authorization': `Bot ${process.env.TOKEN}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -37,7 +38,7 @@ async function modifyGuildIncidentActions(guildId, dmsDisabledUntil) {
 }
 
 async function automateIncidentActions() {
-    global.guilds.forEach(async guildId => {
+    global.getGuilds().forEach(async guildId => {
         const dmsDisabledUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
         await modifyGuildIncidentActions(guildId, dmsDisabledUntil);
 
