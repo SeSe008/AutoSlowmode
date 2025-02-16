@@ -1,6 +1,4 @@
-let guilds = [
-    '1226071049691594764'
-];
+let guilds = [];
 let messages = {};
 let logChannel = {};
 
