@@ -3,7 +3,6 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 const deletemsgjson = require('./delete.js');
-const global = require('./global.js');
 
 const client = new Client({ intents: [
     GatewayIntentBits.Guilds,

@@ -1,6 +1,7 @@
 module.exports = {
     timeoutLength: 5,
-    logChannel: undefined,
+    logChannel: {},
     checkingTime: 2000,
-    messages: {}
+    messages: {},
+    guilds: []
 };

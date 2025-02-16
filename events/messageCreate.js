@@ -1,6 +1,4 @@
 const { Events } = require('discord.js');
-const { time } = require('node:console');
-const fs = require('node:fs');
 const global = require('../global.js');
 var timeouts = 0;
 
@@ -10,18 +8,27 @@ module.exports = {
     execute(message) {
         if (message.author.bot) return;
 
+        const guildId = message.guild.id;
+        const author = message.author;
 
-        let author = message.author;
-        if (global.messages[`${author.id}`] && message.channel.id !== global.messages[`${author.id}`][0] && Date.now() - global.messages[`${author.id}`][1] < global.checkingTime) {
+        const guildMessages = global.messages[guildId];
+        
+        // Check if message was send in a different channel and before checkingTime ran out
+        if (
+            guildMessages[`${author.id}`] &&
+            message.channel.id !== guildMessages[`${author.id}`][0] &&
+            Date.now() - guildMessages[`${author.id}`][1] < global.checkingTime[guildId]
+        ) {
             message.guild.members.fetch(author.id)
             .then(user => {
-              user.timeout(global.timeoutLength * 1000, 'Avoid spamming.')
+              user.timeout(global.timeoutLength[guildId] * 1000, 'Avoid spamming.')
               .then(() => {
                 timeouts++
                 console.log(`User ${author} has been timed out for ${global.timeoutLength} seconds for possible spamming. This was the ${(timeouts > 1) ? ((timeouts > 2) ? timeouts + "th" : 'second') : "first"} timeout by AutoSlowmode`)
-                if (global.logChannel) {
-                    timeouts++;
-                    global.logChannel.send(`User ${author} has been timed out for ${global.timeoutLength} seconds for possible spamming.`);
+
+                const logChannel = global.logChannel[guildId];
+                if (logChannel) {
+                    logChannel.send(`User ${author} has been timed out for ${global.timeoutLength} seconds for possible spamming.`);
                 };
               })
               .catch(console.error)
@@ -29,7 +36,8 @@ module.exports = {
             .catch(console.error);
         }
         else {
-            global.messages[`${author.id}`] = [message.channel.id, Date.now()];
+            // Add new message
+            guildMessages[`${author.id}`] = [message.channel.id, Date.now()];
         }
     },
 };
