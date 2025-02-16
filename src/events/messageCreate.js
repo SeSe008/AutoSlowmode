@@ -1,5 +1,5 @@
 const { Events, GuildOnboarding } = require('discord.js');
-const global = require('../global.js');
+const global = require('../../global.js');
 var timeouts = 0;
 
 

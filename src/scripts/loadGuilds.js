@@ -1,4 +1,4 @@
-const { messages, addGuild, getGuilds } = require('../global.js');
+const { messages, addGuild, getGuilds } = require('../../global.js');
 
 // Load joined guilds
 function load(client) {

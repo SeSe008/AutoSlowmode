@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-const global = require('../global.js');
+const global = require('../../global.js');
 
 function logError(guildId) {
     const logChannel = global.logChannel[guildId];

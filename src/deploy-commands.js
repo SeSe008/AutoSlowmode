@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 const { REST, Routes } = require('discord.js');
-const { getGuilds } = require('./global.js');
+const { getGuilds } = require('../global.js');
 const fs = require('node:fs');
 const path = require('node:path');
 

@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { guilds } = require('../global.js');
+const { guilds } = require('../../global.js');
 
 module.exports = {
     name: Events.GuildCreate,
