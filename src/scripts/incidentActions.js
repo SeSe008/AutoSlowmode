@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-const global = require('../../global.js');
+const global = require('../global.js');
 
 function logError(guildId) {
     const logChannel = global.logChannel[guildId];
@@ -38,13 +38,16 @@ async function modifyGuildIncidentActions(guildId, dmsDisabledUntil) {
 }
 
 async function automateIncidentActions() {
-    global.getGuilds().forEach(async guildId => {
-        const dmsDisabledUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
-        await modifyGuildIncidentActions(guildId, dmsDisabledUntil);
-
-        if (global.logChannel[guildId]) {
-            global.logChannel[guildId].send(`DMs disabled until: ${response.dms_disabled_until}`);    
-        } 
+    global.getGuilds().forEach(async guild => {
+        if (guild[1]) {
+            const guildId = guild[0]
+            const dmsDisabledUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+            await modifyGuildIncidentActions(guildId, dmsDisabledUntil);
+    
+            if (global.logChannel[guildId]) {
+                global.logChannel[guildId].send(`DMs disabled until: ${response.dms_disabled_until}`);    
+            }    
+        }
     });
 }
 

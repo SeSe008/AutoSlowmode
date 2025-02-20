@@ -14,6 +14,7 @@ A discord bot for slowing down your server.
 ## Commands:
 | Command      | Description      |
 | ------------- | ------------- |
+| `/toggledmblock` | Toggles wether members are allowed to send dm's or not. `default=false` |
 | `/setlog` | Changes the channel, in which log messages are send. `default=none` |
 | `/setcheckingtime` | Changes the time, in which spam protection acts. `default=2s` |
-| `/timeoutlength` | Cahnges the timeout for spam protection. `default=5s` |
+| `/timeoutlength` | Changes the timeout for spam protection. `default=5s` |
