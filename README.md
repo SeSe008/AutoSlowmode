@@ -18,3 +18,6 @@ A discord bot for slowing down your server.
 | `/setlog` | Changes the channel, in which log messages are send. `default=none` |
 | `/setcheckingtime` | Changes the time, in which spam protection acts. `default=2s` |
 | `/timeoutlength` | Changes the timeout for spam protection. `default=5s` |
+
+## Using the bot on your own Server
+You can either ![invite the bot](https://discord.com/oauth2/authorize?client_id=1226066517427486761&scope=bot&permissions=8) or create your own application on ![Discord's developert portal](https://discord.com/developers/). Add your client id and token ![here](https://github.com/SeSe008/AutoSlowmode/blob/main/src/.env).
