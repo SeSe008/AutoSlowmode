@@ -1,9 +1,11 @@
 {
   "name": "autoslowmode",
-  "version": "1.1.0",
-  "description": "A Discord Bot to create automatic timeouts for spammers",
+  "version": "1.1.2",
+  "description": "A Discord Bot for slowing down your server",
   "main": "index.js",
   "scripts": {
+    "run": "node src/index.js",
+    "deploy": "node src/deploy_commands.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "se008",

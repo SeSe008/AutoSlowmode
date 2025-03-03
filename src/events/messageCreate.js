@@ -11,6 +11,11 @@ module.exports = {
         const guildId = message.guild.id;
         const author = message.author;
 
+        // Check if spam protection is enabled for this server
+        if (!global.getGuilds().find(g => g[0] === guildId)){
+            return;
+        }
+
         const guildMessages = global.messages[guildId];
         const checkingTime = global.checkingTime[guildId] ? global.checkingTime[guildId] : global.defaultCheckingTime;
         const timeoutLength = global.timeoutLength[guildId] ? global.checkingTime.timeoutLength[guildId] : global.defaultTimeoutLength;

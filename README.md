@@ -12,9 +12,10 @@ A discord bot for slowing down your server.
   - When a user sends 2 Messages in different channels in less than a specific amount of time, they get a timeout.
 
 ## Commands:
-| Command      | Description      |
+| Command | Description |
 | ------------- | ------------- |
 | `/toggledmblock` | Toggles wether members are allowed to send dm's or not. `default=false` |
+| `/togglespamprotection` | Toggles wether members get a timeout on detected spam or not. `default=true` |
 | `/setlog` | Changes the channel, in which log messages are send. `default=none` |
 | `/setcheckingtime` | Changes the time, in which spam protection acts. `default=2s` |
 | `/timeoutlength` | Changes the timeout for spam protection. `default=5s` |
@@ -22,4 +23,4 @@ A discord bot for slowing down your server.
 ## Using the bot on your own Server
 You can either
 - [Invite the bot](https://discord.com/oauth2/authorize?client_id=1226066517427486761&scope=bot&permissions=8) or
-- Create your own application on [Discord's developert portal](https://discord.com/developers/). Add your client id and token [here](https://github.com/SeSe008/AutoSlowmode/blob/main/src/.env).
+- Create your own application on [Discord's developer portal](https://discord.com/developers/). Add your client id and token [here](https://github.com/SeSe008/AutoSlowmode/blob/main/src/.env).
