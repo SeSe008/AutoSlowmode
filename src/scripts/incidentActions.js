@@ -11,7 +11,7 @@ function logError(guildId) {
     }
 }
 
-async function modifyGuildIncidentActions(guildId, dmsDisabledUntil) {
+async function modifyGuildIncidentActions(guildId, dmsDisabledUntil, invitesDisabledUntil) {
     try {
         const response = await fetch(`https://discord.com/api/v10/guilds/${guildId}/incident-actions`, {
             method: 'PUT',
@@ -20,7 +20,7 @@ async function modifyGuildIncidentActions(guildId, dmsDisabledUntil) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                invites_disabled_until: null,
+                invites_disabled_until: invitesDisabledUntil,
                 dms_disabled_until: dmsDisabledUntil
             })
         });
@@ -39,14 +39,11 @@ async function modifyGuildIncidentActions(guildId, dmsDisabledUntil) {
 
 async function automateIncidentActions() {
     global.getGuilds().forEach(async guild => {
-        if (guild[1]) {
-            const guildId = guild[0]
-            const dmsDisabledUntil = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
-            await modifyGuildIncidentActions(guildId, dmsDisabledUntil);
-    
-            if (global.logChannel[guildId]) {
-                global.logChannel[guildId].send(`DMs disabled until: ${response.dms_disabled_until}`);    
-            }    
+        if (guild[1] || guild[3]) {
+            const guildId = guild[0];
+            const dmsDisabledUntil = guild[1] ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() : null;
+	    const invitesDisabledUntil = guild[3] ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() : null;
+	    await modifyGuildIncidentActions(guildId, dmsDisabledUntil, invitesDisabledUntil);
         }
     });
 }

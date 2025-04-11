@@ -11,8 +11,8 @@ module.exports = {
     messages,
     getGuilds: () => guilds,
     addGuild: (guildId) => {
-        if (!guilds.some(guild => guild[0] === guildId && (guild[1] === true || guild[1] === false))) {
-            guilds.push([guildId, false, true]);
+        if (!guilds.some(guild => guild[0] === guildId)) {
+            guilds.push([guildId, false, true, false]);
             messages[guildId] = [];
         }
     }
