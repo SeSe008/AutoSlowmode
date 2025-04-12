@@ -6,16 +6,16 @@
         <h3>Spam Protection</h3>
         <span>
           Automatic spam protection.<br />When a user sends two messages in a specific time, they
-          get a timeout.
+          get a short timeout. This stops bots, that spam messages in all Channels from succesing entirely.
         </span>
       </div>
       <img src="@/assets/images/timeout.png" alt="Timeout" />
     </div>
     <div class="capability">
       <div class="desc">
-        <h3>DM Blocker</h3>
+        <h3>DM and Invite Blocker</h3>
         <span>
-          Blocks direct messages for all members.<br />Uses the new Security Actions feature every
+          Can block both direct messages and invites for all members guild-wide.<br />Uses the new Security Actions feature every
           24 hours, so you do not have to worry about manually setting it.
         </span>
       </div>

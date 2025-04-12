@@ -17,7 +17,7 @@
             </td>
           </tr>
 	  <tr>
-	    <td><strong>/toggleinviteblock`</strong></td>
+	    <td><strong>/toggleinviteblock</strong></td>
 	    <td>Toggles wether a guild's invites are paused or not. <strong>default=false</strong></td>
 	  </tr>
           <tr>
