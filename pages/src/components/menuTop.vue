@@ -31,7 +31,7 @@ export default {
     <div class="spacer"></div>
     <a
       class="heading_link"
-      href="https://discord.com/oauth2/authorize?client_id=1226066517427486761&scope=bot&permissions=8"
+      href="https://discord.com/oauth2/authorize?client_id=1226066517427486761"
     >
       <i class="pi pi-discord"></i>
     </a>
