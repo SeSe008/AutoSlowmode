@@ -10,7 +10,6 @@ let logChannel = {};
 // Save a persistent backup of configurations from guilds
 function saveBackup() {
     const backupData = {
-        guilds,
         messages,
         logChannel
     };
@@ -21,7 +20,6 @@ function loadBackup() {
     if (fs.existsSync(backupFilePath)) {
         const backupData = JSON.parse(fs.readFileSync(backupFilePath));
         guilds = backupData.guilds || [];
-        messages = backupData.messages || {};
         logChannel = backupData.logChannel || {};
     }
 }
