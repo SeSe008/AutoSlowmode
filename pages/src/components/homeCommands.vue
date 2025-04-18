@@ -71,6 +71,7 @@ h2 {
 
 table {
   width: max-content;
+  max-width: 100%;
   color: rgb(var(--color6));
   border-collapse: collapse;
 }

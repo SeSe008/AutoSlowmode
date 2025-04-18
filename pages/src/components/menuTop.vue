@@ -27,6 +27,7 @@ export default {
     <button @click="scrollTo(0)"><img src="@/assets/icons/icon.svg" alt="Icon" /></button>
     <button @click="scrollToElement('capabilities', 10)">Capabilities</button>
     <button @click="scrollToElement('commands', 10)">Commands</button>
+    <button @click="scrollToElement('privacy', 10)">Privacy</button>
     <div class="spacer"></div>
     <a
       class="heading_link"
@@ -74,10 +75,11 @@ export default {
   cursor: pointer;
   outline: none;
   color: rgb(var(--color6));
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: bold;
-  padding: 0.25rem;
+  padding: 0.25rem .5rem;
   z-index: 5;
+  border-right: 1px solid rgb(var(--color4));
 }
 
 #menu > button::before {
@@ -109,6 +111,6 @@ export default {
 }
 
 #menu.scrolled {
-  box-shadow: 0 0.5rem 0.5rem 0 rgb(var(--color4));
+  box-shadow: 0 0.5rem 0.5rem 0 rgb(var(--color2));
 }
 </style>

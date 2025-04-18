@@ -26,13 +26,13 @@ async function modifyGuildIncidentActions(guildId, dmsDisabledUntil, invitesDisa
         });
         if (!response.ok) {
             logError(guildId);
-            throw new Error(`Failed to modify incident actions: ${response.statusText}`);
+            throw new Error(`[ERROR] Failed to modify incident actions: ${response.statusText}`);
         } else {
-            console.log(`Enabled security actions for ${guildId}`);
+            console.log(`[SUCCES] Enabled security actions for ${guildId}`);
         }
         return response.json();
     } catch (error) {
-        console.error(`Error modifying incident actions for guild ${guildId}:`, error);
+        console.error(`[ERROR] Error modifying incident actions for guild ${guildId}: `, error);
         logError(guildId);
     }
 }

@@ -1,14 +1,16 @@
 <script lang="ts">
-import homeHeading from './homeHeading.vue'
-import homeCapabilities from './homeCapabilities.vue'
-import homeCommands from './homeCommands.vue'
-import homeLinks from './homeLinks.vue'
+import homeHeading from './homeHeading.vue';
+import homeCapabilities from './homeCapabilities.vue';
+import homeCommands from './homeCommands.vue';
+import homePrivacy from './homePrivacy.vue';
+import homeLinks from './homeLinks.vue';
 
 export default {
   components: {
     homeHeading,
     homeCapabilities,
     homeCommands,
+    homePrivacy,  
     homeLinks,
   },
   props: {
@@ -20,10 +22,11 @@ export default {
 }
 </script>
 <template>
-  <div id="home" :class="{ scrolled: isScrolled }">
+  <div id="home">
     <homeHeading />
     <homeCapabilities />
     <homeCommands />
+    <homePrivacy />
     <homeLinks />
   </div>
 </template>
