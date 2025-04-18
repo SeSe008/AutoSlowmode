@@ -1,7 +1,6 @@
 # Auto-Slowmode
 
 [![DiscordJs](https://img.shields.io/badge/discord-js-F7DF1E?logo=javascript&color=F7DF1E)](https://github.com/discordjs/discord.js)
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)<br>
 [![Invite Me to Your Server](https://img.shields.io/badge/Invite%20Me-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/oauth2/authorize?client_id=1226066517427486761&scope=bot&permissions=8)
 
 A discord bot for slowing down your server.
@@ -25,4 +24,4 @@ A discord bot for slowing down your server.
 ## Using the bot on your own Server
 You can either
 - [Invite the bot](https://discord.com/oauth2/authorize?client_id=1226066517427486761&scope=bot&permissions=8) or
-- Create your own application on [Discord's developer portal](https://discord.com/developers/). Add your client id and token [here](https://github.com/SeSe008/AutoSlowmode/blob/main/.env).
+- Create your own application on [Discord's developer portal](https://discord.com/developers/). Add an .env file containing your bot's token as `TOKEN=<TOKEN>` in the root folder. Then run `npm run bot` to start the application.
