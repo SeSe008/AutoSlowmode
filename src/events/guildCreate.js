@@ -1,13 +1,12 @@
 const { Events } = require('discord.js');
-const { guilds } = require('../global.js');
+const { deployCommandsToGuild } = require('../utils/deployCommands');
 
 module.exports = {
     name: Events.GuildCreate,
-    execute(guild) {
-        const guildId = guild.id;
+    async execute(guild, client) {
+	console.log(`[INFO] Joined new guild: ${guild.name} (${guildId})`);
 
-        console.log(`Got added to guild ${guildId}`);
-
-        guilds.push(guildId);
+	// Deploy commands
+	await deployCommandsToGuild(client.user.id, guild);
     }
-}
+};

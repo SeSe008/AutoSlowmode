@@ -1,5 +1,5 @@
-const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
 const { getGuilds } = require('../../global.js');
+const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
 
 function isAdmin(member) {
     return member.permissions.has(PermissionFlagsBits.Administrator);

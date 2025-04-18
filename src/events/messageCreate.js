@@ -19,7 +19,7 @@ module.exports = {
         const guildMessages = global.messages[guildId];
         const checkingTime = global.checkingTime[guildId] ? global.checkingTime[guildId] : global.defaultCheckingTime;
         const timeoutLength = global.timeoutLength[guildId] ? global.checkingTime.timeoutLength[guildId] : global.defaultTimeoutLength;
-        
+
         // Check if message was send in a different channel and before checkingTime ran out
         if (
             guildMessages[`${author.id}`] &&
@@ -28,23 +28,31 @@ module.exports = {
         ) {
             message.guild.members.fetch(author.id)
             .then(user => {
-              user.timeout(timeoutLength * 1000, 'Avoid spamming.')
-              .then(() => {
-                timeouts++
-                console.log(`User ${author} has been timed out for ${timeoutLength} seconds for possible spamming. This was the ${(timeouts > 1) ? ((timeouts > 2) ? timeouts + "th" : 'second') : "first"} timeout by AutoSlowmode`)
+		user.timeout(timeoutLength * 1000, 'Possible spam.')
+		    .then(() => {
+			timeouts++
+			console.log(`[INFO] A user was timed out for possible spamming. Total timeouts: ${timeouts}`)
 
-                const logChannel = global.logChannel[guildId];
-                if (logChannel) {
-                    logChannel.send(`User ${author} has been timed out for ${timeoutLength} seconds for possible spamming.`);
-                };
-              })
-              .catch(console.error)
-            })
-            .catch(console.error);
+			const logChannel = global.logChannel[guildId];
+			if (logChannel) {
+			    logChannel.send(`User ${author} has been timed out for ${timeoutLength} seconds for possible spamming.`);
+			};
+		    })
+		    .catch(error => {
+			console.error(`[ERROR] Error: "${error.rawError.message}" with code: "${error.code}" when timeouting on guild "${guildId}"`)
+		    });
+	    })
+	    .catch(console.error);
         }
         else {
-            // Add new message
+            // Store message
             guildMessages[`${author.id}`] = [message.channel.id, Date.now()];
+
+	    // Remove message after checkingTime
+	    setTimeout(() => {
+		console.log(`[INFO] Removing message "${message.id}" from guild "${guildId}"`); 
+		guildMessages.shift();
+	    }, checkingTime * 1000);
         }
     },
 };

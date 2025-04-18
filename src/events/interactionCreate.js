@@ -4,15 +4,16 @@ module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
         if (!interaction.isCommand()) return;
-
+	
         const { commandName } = interaction;
-
+	
         const command = interaction.client.commands.get(commandName);
-
-		if (!command) {
-			console.error(`No command matching ${interaction.commandName} was found.`);
-			return;
-		}
+	
+	if (!command) {
+	    console.error(`[WARNING] No command matching ${interaction.commandName} was found.`);
+	    return;
+	}
+	
         try {
             await command.execute(interaction);
         } catch (error) {

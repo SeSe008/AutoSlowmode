@@ -1,2 +1,9 @@
+#node
 node_modules
+package-lock.json
+
+#env
 .env
+
+#config
+.eslintrc.js
