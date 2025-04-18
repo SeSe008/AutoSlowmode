@@ -25,8 +25,9 @@ module.exports = {
             return;
         }
 
-        guild[3] = !guild[3];i
+        guild[3] = !guild[3];
 
         return interaction.reply({ content: `The invite block was ${guild[3] ? "enabled" : "disabled"}.`, flags: MessageFlags.Ephemeral });
     }
 }
+
