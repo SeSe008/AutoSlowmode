@@ -57,25 +57,13 @@ export default {
 }
 
 #menu > button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  color: rgb(var(--color6));
-  font-size: 1.25rem;
-  font-weight: bold;
-  padding: 0.25rem;
-  z-index: 5;
-}
-
-#menu > button {
   position: relative;
   background-color: transparent;
   border: none;
   cursor: pointer;
   outline: none;
   color: rgb(var(--color6));
-  font-size: 1rem;
+  font-size: calc(8px + 1vmin);
   font-weight: bold;
   padding: 0.25rem .5rem;
   z-index: 5;

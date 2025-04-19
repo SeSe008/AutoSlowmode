@@ -69,6 +69,7 @@ h2 {
   flex-direction: column;
   align-items: center;
   gap: .5rem;
+  font-size: calc(8px + .5vmin);
 }
 
 table {
