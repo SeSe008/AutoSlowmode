@@ -16,6 +16,7 @@
   "dependencies": {
     "discord.js": "^14.18.0",
     "dotenv": "^16.4.7",
+    "node-cron": "^4.0.0",
     "node-fetch": "^3.3.2"
   }
 }

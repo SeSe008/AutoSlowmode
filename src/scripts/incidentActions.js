@@ -1,3 +1,4 @@
+const cron = require('node-cron');
 require('dotenv').config();
 
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
@@ -39,7 +40,7 @@ async function modifyGuildIncidentActions(guildId, dmsDisabledUntil, invitesDisa
 
 async function automateIncidentActions() {
     global.getGuilds().forEach(async guild => {
-        if (guild[1] || guild[3]) {
+    	if (guild[1] || guild[3]) {
             const guildId = guild[0];
             const dmsDisabledUntil = guild[1] ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() : null;
 	    const invitesDisabledUntil = guild[3] ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() : null;
@@ -49,8 +50,10 @@ async function automateIncidentActions() {
 }
 
 async function startScript() {
-    await automateIncidentActions();
-    setInterval(automateIncidentActions, 24 * 60 * 60 * 1000);
+    cron.schedule(
+    	'* * * * *',
+        automateIncidentActions,
+    );
 }
 
 module.exports = { startScript }
