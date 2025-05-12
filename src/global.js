@@ -10,7 +10,7 @@ let logChannel = {};
 // Save a persistent backup of configurations from guilds
 function saveBackup() {
     const backupData = {
-        messages,
+        guilds,
         logChannel
     };
     fs.writeFileSync(backupFilePath, JSON.stringify(backupData, null, 2));

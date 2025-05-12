@@ -54,7 +54,7 @@ async function automateIncidentActions() {
 
 async function startScript() {
     cron.schedule(
-    	'* * * * *',
+    	process.env.INCIDENT_ACTIONS_TIME,
         automateIncidentActions,
     );
 }
