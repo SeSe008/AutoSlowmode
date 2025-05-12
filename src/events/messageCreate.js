@@ -50,8 +50,8 @@ module.exports = {
 
 	    // Remove message after checkingTime
 	    setTimeout(() => {
-		console.log(`[INFO] Removing message in "${channel.id}" from guild "${guildId}"`); 
-		guildMessages.shift();
+		console.log(`[INFO] Removing message in "${message.channel.id}" from guild "${guildId}"`); 
+		delete guildMessages[author.id];
 	    }, checkingTime * 1000);
         }
     },

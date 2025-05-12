@@ -39,14 +39,17 @@ async function modifyGuildIncidentActions(guildId, dmsDisabledUntil, invitesDisa
 }
 
 async function automateIncidentActions() {
+    console.log(`[INFO] Executing incident actions, ${global.getGuilds()}`);
     global.getGuilds().forEach(async guild => {
     	if (guild[1] || guild[3]) {
+	    console.log(`[INFO] Executing for Guild ${guild[0]}`);
             const guildId = guild[0];
             const dmsDisabledUntil = guild[1] ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() : null;
 	    const invitesDisabledUntil = guild[3] ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() : null;
 	    await modifyGuildIncidentActions(guildId, dmsDisabledUntil, invitesDisabledUntil);
         }
     });
+    console.log('[INFO] Executed incident actions');
 }
 
 async function startScript() {
