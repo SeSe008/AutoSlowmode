@@ -10,6 +10,10 @@
           </tr>
         </thead>
         <tbody>
+	  <tr>
+	    <td><strong>/help</strong></td>
+	    <td>Show a link to this website.</td>
+	  </tr>
           <tr>
             <td><strong>/toggledmblock</strong></td>
             <td>
@@ -34,11 +38,11 @@
             </td>
           </tr>
           <tr>
-            <td><strong>/setcheckingtime</strong></td>
-            <td>Changes the time in which spam protection acts. <strong>default=2s</strong></td>
+            <td><strong>/settimeoutchecklength</strong></td>
+            <td>Changes the time in which spam protection can act. <strong>default=2s</strong></td>
           </tr>
           <tr>
-            <td><strong>/timeoutlength</strong></td>
+            <td><strong>/settimeoutlength</strong></td>
             <td>Changes the timeout for spam protection. <strong>default=5s</strong></td>
           </tr>
         </tbody>
