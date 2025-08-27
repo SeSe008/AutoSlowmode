@@ -1,12 +1,9 @@
-const { messages, addGuild, getGuilds } = require('../global.js');
+import { addGuild } from '../global.js';
 
 // Load joined guilds
-function load(client) {
+export function load(client) {
     const Guilds = client.guilds.cache.map((guild) => guild.id);
     Guilds.forEach((guildId) => {
-        messages[guildId] = [];
         addGuild(guildId);
     });
 }
-
-module.exports = { load };

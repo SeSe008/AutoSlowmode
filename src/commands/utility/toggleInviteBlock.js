@@ -1,33 +1,27 @@
-const {
+import {
     SlashCommandBuilder,
     PermissionFlagsBits,
     MessageFlags,
-} = require('discord.js');
-const { getGuilds } = require('../../global.js');
+} from 'discord.js';
+import {
+    guildHasInviteBlock,
+    toggleInviteBlockForGuild,
+} from '../../global.js';
 
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('toggleinviteblock')
-        .setDescription('Toggle the invite block.')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+export const data = new SlashCommandBuilder()
+    .setName('toggleinviteblock')
+    .setDescription(
+        'Toggle the invite block, enforced through incident actions.',
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
-    async execute(interaction) {
-        const guildId = interaction.guild.id;
-        const guild = getGuilds().find((g) => g[0] === guildId);
+export async function execute(interaction) {
+    const guildId = interaction.guild.id;
 
-        if (!guild) {
-            await interaction.reply({
-                content: 'Guild not found.',
-                flags: MessageFlags.Ephemeral,
-            });
-            return;
-        }
+    toggleInviteBlockForGuild(guildId);
 
-        guild[3] = !guild[3];
-
-        return interaction.reply({
-            content: `The invite block was ${guild[3] ? 'enabled' : 'disabled'}.`,
-            flags: MessageFlags.Ephemeral,
-        });
-    },
-};
+    return interaction.reply({
+        content: `The invite block was ${guildHasInviteBlock(guildId) ? 'enabled' : 'disabled'}.`,
+        flags: MessageFlags.Ephemeral,
+    });
+}

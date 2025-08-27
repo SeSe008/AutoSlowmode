@@ -1,12 +1,14 @@
-const cron = require('node-cron');
-require('dotenv').config();
+import cron from 'node-cron';
+
+import dotenv from 'dotenv';
+dotenv.config();
 
 const fetch = (...args) =>
     import('node-fetch').then(({ default: fetch }) => fetch(...args));
-const global = require('../global.js');
+import { getGuilds, getLogChannelForGuild } from '../global.js';
 
 function logError(guildId) {
-    const logChannel = global.logChannel[guildId];
+    const logChannel = getLogChannelForGuild(guildId);
 
     if (logChannel) {
         logChannel.send('Could not enable security actions.');
@@ -52,17 +54,19 @@ async function modifyGuildIncidentActions(
 }
 
 async function automateIncidentActions() {
-    console.log(`[INFO] Executing incident actions, ${global.getGuilds()}`);
-    global.getGuilds().forEach(async (guild) => {
-        if (guild[1] || guild[3]) {
-            console.log(`[INFO] Executing for Guild ${guild[0]}`);
-            const guildId = guild[0];
-            const dmsDisabledUntil = guild[1]
+    console.log(`[INFO] Executing incident actions, ${getGuilds()}`);
+
+    Object.entries(getGuilds()).forEach(async ([guildId, guild]) => {
+        if (guild.inviteBlock || guild.dmBlock) {
+            console.log(`[INFO] Executing for Guild ${guildId}`);
+
+            const invitesDisabledUntil = guild.inviteBlock
                 ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
                 : null;
-            const invitesDisabledUntil = guild[3]
+            const dmsDisabledUntil = guild.dmBlock
                 ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
                 : null;
+
             await modifyGuildIncidentActions(
                 guildId,
                 dmsDisabledUntil,
@@ -73,8 +77,6 @@ async function automateIncidentActions() {
     console.log('[INFO] Executed incident actions');
 }
 
-async function startScript() {
+export async function startScript() {
     cron.schedule(process.env.INCIDENT_ACTIONS_TIME, automateIncidentActions);
 }
-
-module.exports = { startScript };

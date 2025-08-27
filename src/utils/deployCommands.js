@@ -1,28 +1,38 @@
-const { REST, Routes } = require('discord.js');
-require('dotenv').config();
-const fs = require('node:fs');
-const path = require('node:path');
+import { REST, Routes } from 'discord.js';
+
+import dotenv from 'dotenv';
+dotenv.config();
+
+import { readdirSync } from 'fs';
+import { join, dirname } from 'path';
+import { pathToFileURL, fileURLToPath } from 'url';
 
 const commands = [];
 
-const foldersPath = path.join(__dirname, '..', 'commands');
-const commandFolders = fs.readdirSync(foldersPath);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const foldersPath = join(__dirname, '..', 'commands');
+const commandFolders = readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
-    const commandsPath = path.join(foldersPath, folder);
-    const commandFiles = fs
-        .readdirSync(commandsPath)
-        .filter((file) => file.endsWith('.js'));
+    const commandsPath = join(foldersPath, folder);
+    const commandFiles = readdirSync(commandsPath).filter((file) =>
+        file.endsWith('.js'),
+    );
 
     for (const file of commandFiles) {
-        const filePath = path.join(commandsPath, file);
-        const command = require(filePath);
+        const fileUrl = pathToFileURL(join(commandsPath, file)).href;
 
-        if ('data' in command && 'execute' in command) {
+        const mod = await import(fileUrl);
+
+        const command = mod.default ?? mod;
+
+        if (command?.data && command?.execute) {
             commands.push(command.data.toJSON());
         } else {
             console.log(
-                `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`,
+                `[WARNING] The command at ${join(commandsPath, file)} is missing a required "data" or "execute" property.`,
             );
         }
     }
@@ -30,7 +40,7 @@ for (const folder of commandFolders) {
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
-async function deployCommandsToGuild(clientId, guild) {
+export async function deployCommandsToGuild(clientId, guild) {
     try {
         console.log(
             `[INFO] Deploying ${commands.length} commands to guild "${guild.name}" (${guild.id})...`,
@@ -51,5 +61,3 @@ async function deployCommandsToGuild(clientId, guild) {
         );
     }
 }
-
-module.exports = { deployCommandsToGuild };

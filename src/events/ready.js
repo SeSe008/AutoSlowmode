@@ -1,23 +1,21 @@
-const { Events } = require('discord.js');
-const incidentActions = require('../scripts/incidentActions.js');
-const loadGuilds = require('../utils/loadGuilds.js');
-const { deployCommandsToGuild } = require('../utils/deployCommands');
+import { Events } from 'discord.js';
+import { startScript } from '../scripts/incidentActions.js';
+import { load } from '../utils/loadGuilds.js';
+import { deployCommandsToGuild } from '../utils/deployCommands.js';
 
-module.exports = {
-    name: Events.ClientReady,
-    once: true,
-    execute(client) {
-	// Load joined guilds
-	loadGuilds.load(client);
-	
-	// Start the auto dm-ban.
-	incidentActions.startScript();
+export const name = Events.ClientReady;
+export const once = true;
+export function execute(client) {
+    // Load joined guilds
+    load(client);
 
-	console.log(`[INFO] Ready! Logged in as ${client.user.tag}`);
+    // Start automatic incident actions
+    startScript();
 
-	// Deploy Commands
-	client.guilds.cache.forEach(guild => {
-	    deployCommandsToGuild(client.user.id, guild);
-	})
-    },
-};
+    console.log(`[INFO] Ready! Logged in as ${client.user.tag}`);
+
+    // Deploy Commands
+    client.guilds.cache.forEach((guild) => {
+        deployCommandsToGuild(client.user.id, guild);
+    });
+}

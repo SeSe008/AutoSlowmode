@@ -1,33 +1,25 @@
-const {
+import {
     SlashCommandBuilder,
     PermissionFlagsBits,
     MessageFlags,
-} = require('discord.js');
-const { getGuilds } = require('../../global.js');
+} from 'discord.js';
+import {
+    guildHasSpamProtection,
+    toggleSpamProtectionForGuild,
+} from '../../global.js';
 
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('togglespamprotection')
-        .setDescription('Toggle the spam protection.')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+export const data = new SlashCommandBuilder()
+    .setName('togglespamprotection')
+    .setDescription('Toggle the spam-protection for a server.')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
-    async execute(interaction) {
-        const guildId = interaction.guild.id;
-        const guild = getGuilds().find((g) => g[0] === guildId);
+export async function execute(interaction) {
+    const guildId = interaction.guild.id;
 
-        if (!guild) {
-            await interaction.reply({
-                content: 'Guild not found.',
-                flags: MessageFlags.Ephemeral,
-            });
-            return;
-        }
+    toggleSpamProtectionForGuild(guildId);
 
-        guild[2] = !guild[2];
-
-        return interaction.reply({
-            content: `The spam protection was ${guild[1] ? 'enabled' : 'disabled'}.`,
-            flags: MessageFlags.Ephemeral,
-        });
-    },
-};
+    return interaction.reply({
+        content: `The dm block was ${guildHasSpamProtection(guildId) ? 'enabled' : 'disabled'}.`,
+        flags: MessageFlags.Ephemeral,
+    });
+}
