@@ -1,32 +1,33 @@
-const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
+const {
+    SlashCommandBuilder,
+    PermissionFlagsBits,
+    MessageFlags,
+} = require('discord.js');
 const { getGuilds } = require('../../global.js');
-
-function isAdmin(member) {
-    return member.permissions.has(PermissionFlagsBits.Administrator);
-}
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('togglespamprotection')
         .setDescription('Toggle the spam protection.')
-        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+
     async execute(interaction) {
-        if (!isAdmin(interaction.member)) {
-            await interaction.reply({ content: 'You do not have permission to use this command.', flags: MessageFlags.Ephemeral });
-            return;
-        }
-
         const guildId = interaction.guild.id;
-
-        const guild = getGuilds().find(g => g[0] === guildId);
+        const guild = getGuilds().find((g) => g[0] === guildId);
 
         if (!guild) {
-            await interaction.reply({ content: 'Guild not found.', flags: MessageFlags.Ephemeral });
+            await interaction.reply({
+                content: 'Guild not found.',
+                flags: MessageFlags.Ephemeral,
+            });
             return;
         }
 
         guild[2] = !guild[2];
 
-        return interaction.reply({ content: `The spam protection was ${guild[1] ? "enabled" : "disabled"}.`, flags: MessageFlags.Ephemeral });
-    }
-}
+        return interaction.reply({
+            content: `The spam protection was ${guild[1] ? 'enabled' : 'disabled'}.`,
+            flags: MessageFlags.Ephemeral,
+        });
+    },
+};

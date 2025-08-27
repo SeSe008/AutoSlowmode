@@ -11,7 +11,7 @@ let logChannel = {};
 function saveBackup() {
     const backupData = {
         guilds,
-        logChannel
+        logChannel,
     };
     fs.writeFileSync(backupFilePath, JSON.stringify(backupData, null, 2));
 }
@@ -29,8 +29,14 @@ loadBackup();
 
 // Save
 process.on('exit', saveBackup);
-process.on('SIGINT', () => { saveBackup(); process.exit(); });
-process.on('SIGTERM', () => { saveBackup(); process.exit(); });
+process.on('SIGINT', () => {
+    saveBackup();
+    process.exit();
+});
+process.on('SIGTERM', () => {
+    saveBackup();
+    process.exit();
+});
 
 module.exports = {
     timeoutLength: {},
@@ -41,9 +47,9 @@ module.exports = {
     messages,
     getGuilds: () => guilds,
     addGuild: (guildId) => {
-        if (!guilds.some(guild => guild[0] === guildId)) {
+        if (!guilds.some((guild) => guild[0] === guildId)) {
             guilds.push([guildId, false, true, false]);
             messages[guildId] = [];
         }
-    }
+    },
 };
