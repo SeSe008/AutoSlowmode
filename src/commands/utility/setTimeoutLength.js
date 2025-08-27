@@ -9,7 +9,7 @@ import {
 } from '../../global.js';
 
 export const data = new SlashCommandBuilder()
-    .setName('timeoutlength')
+    .setName('settimeoutlength')
     .setDescription('Set new timeout length enforced on possible spammers.')
     .addIntegerOption((option) =>
         option
