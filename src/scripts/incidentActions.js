@@ -5,7 +5,13 @@ dotenv.config();
 
 const fetch = (...args) =>
     import('node-fetch').then(({ default: fetch }) => fetch(...args));
-import { getGuilds, getLogChannelForGuild } from '../global.js';
+
+import {
+    getGuilds,
+    getLogChannelForGuild,
+    guildHasDmBlock,
+    guildHasInviteBlock,
+} from '../global.js';
 
 function logError(guildId) {
     const logChannel = getLogChannelForGuild(guildId);
@@ -53,26 +59,25 @@ async function modifyGuildIncidentActions(
     }
 }
 
+export async function executeIncidentActionsForGuild(guildId, guild) {
+    console.log(`[INFO] Executing for Guild ${guildId}`);
+
+    const invitesDisabledUntil = guildHasInviteBlock(guildId)
+        ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+        : null;
+    const dmsDisabledUntil = guildHasDmBlock(guildId)
+        ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+        : null;
+
+    modifyGuildIncidentActions(guildId, dmsDisabledUntil, invitesDisabledUntil);
+}
+
 async function automateIncidentActions() {
-    console.log(`[INFO] Executing incident actions, ${getGuilds()}`);
+    console.log(`[INFO] Executing incident actions`);
 
     Object.entries(getGuilds()).forEach(async ([guildId, guild]) => {
-        if (guild.inviteBlock || guild.dmBlock) {
-            console.log(`[INFO] Executing for Guild ${guildId}`);
-
-            const invitesDisabledUntil = guild.inviteBlock
-                ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
-                : null;
-            const dmsDisabledUntil = guild.dmBlock
-                ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
-                : null;
-
-            await modifyGuildIncidentActions(
-                guildId,
-                dmsDisabledUntil,
-                invitesDisabledUntil,
-            );
-        }
+        if (guildHasDmBlock(guildId) || guildHasInviteBlock(guildId))
+            executeIncidentActionsForGuild(guildId, guild);
     });
     console.log('[INFO] Executed incident actions');
 }

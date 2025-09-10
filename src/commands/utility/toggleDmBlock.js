@@ -3,7 +3,12 @@ import {
     PermissionFlagsBits,
     MessageFlags,
 } from 'discord.js';
-import { guildHasDmBlock, toggleDmBlockForGuild } from '../../global.js';
+import {
+    getGuild,
+    guildHasDmBlock,
+    toggleDmBlockForGuild,
+} from '../../global.js';
+import { executeIncidentActionsForGuild } from '../../scripts/incidentActions.js';
 
 export const data = new SlashCommandBuilder()
     .setName('toggledmblock')
@@ -13,7 +18,9 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction) {
     const guildId = interaction.guild.id;
 
-    toggleDmBlockForGuild(guildId);
+    await toggleDmBlockForGuild(guildId);
+
+    executeIncidentActionsForGuild(guildId, getGuild(guildId));
 
     return interaction.reply({
         content: `The dm block was ${guildHasDmBlock(guildId) ? 'enabled' : 'disabled'}.`,
