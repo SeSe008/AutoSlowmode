@@ -19,7 +19,7 @@ export async function execute(interaction) {
     toggleSpamProtectionForGuild(guildId);
 
     return interaction.reply({
-        content: `The dm block was ${guildHasSpamProtection(guildId) ? 'enabled' : 'disabled'}.`,
+        content: `The spam block was ${guildHasSpamProtection(guildId) ? 'enabled' : 'disabled'}.`,
         flags: MessageFlags.Ephemeral,
     });
 }
