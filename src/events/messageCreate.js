@@ -8,7 +8,7 @@ import {
     getLogChannelForGuild,
     guildHasSpamProtection,
 } from '../global.js';
-var timeouts = 0;
+import logger from '../utils/logger.js';
 
 export const name = Events.MessageCreate;
 export function execute(message) {
@@ -38,9 +38,8 @@ export function execute(message) {
             .then((user) => {
                 user.timeout(timeOutLength * 1000, 'Possible spam.')
                     .then(() => {
-                        timeouts++;
-                        console.log(
-                            `[INFO] A user was timed out for possible spamming. Total timeouts: ${timeouts}`,
+                        logger.info(
+                            `A user was timed out for possible spamming in "${message.guild.name}" (${guildId}).`,
                         );
 
                         if (logChannel) {
@@ -50,8 +49,8 @@ export function execute(message) {
                         }
                     })
                     .catch((error) => {
-                        console.error(
-                            `[ERROR] Error: "${error.rawError.message}" with code: "${error.code}" when timeouting on guild "${guildId}"`,
+                        logger.error(
+                            `Error: "${error.rawError.message}" with code: "${error.code}" when timeouting on guild "${message.guild.name}" (${guildId})`,
                         );
                     });
             })
@@ -62,8 +61,8 @@ export function execute(message) {
 
         // Remove message after checkingTime
         setTimeout(() => {
-            console.log(
-                `[INFO] Removing message in "${message.channel.id}" from guild "${guildId}"`,
+            logger.debug(
+                `Removing message in "${message.channel.id}" from guild "${message.guild.name}" (${guildId})`,
             );
             removeMessageFromGuild(guildId, author.id);
         }, timeOutCheckLength);

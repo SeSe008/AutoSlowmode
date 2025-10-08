@@ -3,6 +3,8 @@ import cron from 'node-cron';
 import dotenv from 'dotenv';
 dotenv.config();
 
+import logger from '../utils/logger.js';
+
 const fetch = (...args) =>
     import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
@@ -12,6 +14,7 @@ import {
     guildHasDmBlock,
     guildHasInviteBlock,
 } from '../global.js';
+import { getClient } from '../index.js';
 
 function logError(guildId) {
     const logChannel = getLogChannelForGuild(guildId);
@@ -41,27 +44,25 @@ async function modifyGuildIncidentActions(
                 }),
             },
         );
+
         if (!response.ok) {
             logError(guildId);
-            throw new Error(
-                `[ERROR] Failed to modify incident actions: ${response.statusText}`,
+            logger.error(
+                `Failed to modify incident actions for guild ${guildId}: ${response.statusText}`,
             );
         } else {
-            console.log(`[SUCCES] Enabled security actions for ${guildId}`);
+            logger.success(`Enabled security actions for ${guildId}`);
         }
         return response.json();
     } catch (error) {
-        console.error(
-            `[ERROR] Error modifying incident actions for guild ${guildId}: `,
-            error,
+        logger.error(
+            `Error modifying incident actions for guild ${guildId}: ${error}`,
         );
         logError(guildId);
     }
 }
 
-export async function executeIncidentActionsForGuild(guildId, guild) {
-    console.log(`[INFO] Executing for Guild ${guildId}`);
-
+export async function executeIncidentActionsForGuild(guildId) {
     const invitesDisabledUntil = guildHasInviteBlock(guildId)
         ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
         : null;
@@ -69,17 +70,22 @@ export async function executeIncidentActionsForGuild(guildId, guild) {
         ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
         : null;
 
+    logger.info(
+        `Executing ${[guildHasInviteBlock(guildId) && 'Invite Block', guildHasDmBlock(guildId) && 'Dm Block'].filter(Boolean).join(' and ')} for Guild "${(await getClient().guilds.fetch(guildId)).name}" (${guildId})`,
+    );
+
     modifyGuildIncidentActions(guildId, dmsDisabledUntil, invitesDisabledUntil);
 }
 
 async function automateIncidentActions() {
-    console.log(`[INFO] Executing incident actions`);
+    logger.info(`Executing incident actions`);
 
     Object.entries(getGuilds()).forEach(async ([guildId, guild]) => {
         if (guildHasDmBlock(guildId) || guildHasInviteBlock(guildId))
             executeIncidentActionsForGuild(guildId, guild);
     });
-    console.log('[INFO] Executed incident actions');
+
+    logger.info('Executed incident actions');
 }
 
 export async function startScript() {

@@ -8,12 +8,18 @@ import { dirname, join } from 'path';
 
 import { Client, Collection, GatewayIntentBits } from 'discord.js';
 
+import logger from './utils/logger.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
+
+export function getClient() {
+    return client;
+}
 
 client.commands = new Collection();
 
@@ -38,8 +44,8 @@ async function loadCommands() {
             if ('data' in command && 'execute' in command) {
                 client.commands.set(command.data.name, command);
             } else {
-                console.log(
-                    `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`,
+                logger.warning(
+                    `The command at ${filePath} is missing a required "data" or "execute" property.`,
                 );
             }
         }

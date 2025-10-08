@@ -6,6 +6,7 @@ dotenv.config();
 import { readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { pathToFileURL, fileURLToPath } from 'url';
+import logger from './logger.js';
 
 const commands = [];
 
@@ -31,8 +32,8 @@ for (const folder of commandFolders) {
         if (command?.data && command?.execute) {
             commands.push(command.data.toJSON());
         } else {
-            console.log(
-                `[WARNING] The command at ${join(commandsPath, file)} is missing a required "data" or "execute" property.`,
+            logger.warning(
+                `The command at ${join(commandsPath, file)} is missing a required "data" or "execute" property.`,
             );
         }
     }
@@ -42,8 +43,8 @@ const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
 export async function deployCommandsToGuild(clientId, guild) {
     try {
-        console.log(
-            `[INFO] Deploying ${commands.length} commands to guild "${guild.name}" (${guild.id})...`,
+        logger.info(
+            `Deploying ${commands.length} commands to guild "${guild.name}" (${guild.id})...`,
         );
 
         const data = await rest.put(
@@ -51,12 +52,12 @@ export async function deployCommandsToGuild(clientId, guild) {
             { body: commands },
         );
 
-        console.log(
-            `[SUCCESS] Deployed ${data.length} commands to guild "${guild.name}" (${guild.id}).`,
+        logger.success(
+            `Deployed ${data.length} commands to guild "${guild.name}" (${guild.id}).`,
         );
     } catch (error) {
-        console.error(
-            `[ERROR] Failed to deploy commands to "${guild.name}" (${guild.id}):`,
+        logger.error(
+            `Failed to deploy commands to "${guild.name}" (${guild.id}):`,
             error,
         );
     }

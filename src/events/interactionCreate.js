@@ -1,4 +1,5 @@
 import { Events, MessageFlags } from 'discord.js';
+import logger from '../utils/logger.js';
 
 export const name = Events.InteractionCreate;
 export async function execute(interaction) {
@@ -9,8 +10,8 @@ export async function execute(interaction) {
     const command = interaction.client.commands.get(commandName);
 
     if (!command) {
-        console.error(
-            `[WARNING] No command matching ${interaction.commandName} was found.`,
+        logger.warning(
+            `No command matching ${interaction.commandName} was found.`,
         );
         return;
     }
