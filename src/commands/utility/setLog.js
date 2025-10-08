@@ -28,7 +28,7 @@ export async function execute(interaction) {
     setLogChannelForGuild(guildId, channel);
 
     return interaction.reply({
-        content: `The log channel has been set to ["${channel.name}"](${channel.id}).`,
+        content: `The log channel has been set to ${channel}.`,
         flags: MessageFlags.Ephemeral,
     });
 }
