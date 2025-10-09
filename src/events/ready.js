@@ -6,7 +6,8 @@ import logger from '../utils/logger.js';
 
 export const name = Events.ClientReady;
 export const once = true;
-export function execute(client) {
+
+export async function execute(client) {
     // Load joined guilds
     load(client);
 
@@ -15,8 +16,12 @@ export function execute(client) {
 
     logger.info(`Ready! Logged in as ${client.user.tag}`);
 
+    const guilds = await client.guilds.fetch();
+
+    logger.debug(`Guilds [${guilds.map((g) => `${g.name} (${g.id})`)}]`);
+
     // Deploy Commands
-    client.guilds.cache.forEach((guild) => {
+    guilds.forEach((guild) => {
         deployCommandsToGuild(client.user.id, guild);
     });
 }
