@@ -9,6 +9,7 @@ import {
     guildHasSpamProtection,
 } from '../global.js';
 import logger from '../utils/logger.js';
+import { getClient } from '../index.js';
 
 export const name = Events.MessageCreate;
 export function execute(message) {
@@ -36,28 +37,27 @@ export function execute(message) {
         message.guild.members
             .fetch(author.id)
             .then((user) => {
-                user.timeout(timeOutLength * 1000, 'Possible spam.')
-                    .then(() => {
-                        logger.info(
-                            `A user was timed out for possible spamming in "${message.guild.name}" (${guildId}).`,
-                        );
-
-                        if (logChannel) {
-                            logChannel.send(
-                                `User ${author} has been timed out for ${timeOutLength} seconds for possible spamming.`,
-                            );
-                        }
-                    })
-                    .catch((error) => {
-                        logger.error(
-                            `Error: "${error.rawError.message}" with code: "${error.code}" when timeouting on guild "${message.guild.name}" (${guildId})`,
-                        );
-                    });
+                user.timeout(timeOutLength * 1000, 'Possible spam.');
             })
-            .catch(console.error);
+            .then(async () => {
+                logger.info(
+                    `A user was timed out for possible spamming in "${message.guild.name}" (${guildId}).`,
+                );
+
+                if (logChannel) {
+                    (await getClient().channels.fetch(logChannel)).send(
+                        `User ${author} has been timed out for ${timeOutLength} seconds for possible spamming.`,
+                    );
+                }
+            })
+            .catch((error) => {
+                logger.error(
+                    `Error: "${error}" with code: "${error.code}" when timeouting on guild "${message.guild.name}" (${guildId})`,
+                );
+            });
     } else {
         // Store message
-        addMessageToGuild(author.id, message.channel.id, Date.now());
+        addMessageToGuild(guildId, author.id, message.channel.id, Date.now());
 
         // Remove message after checkingTime
         setTimeout(() => {

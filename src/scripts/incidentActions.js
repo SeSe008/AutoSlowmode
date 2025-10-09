@@ -16,8 +16,10 @@ import {
 } from '../global.js';
 import { getClient } from '../index.js';
 
-function logError(guildId) {
-    const logChannel = getLogChannelForGuild(guildId);
+async function logError(guildId) {
+    const logChannel = await getClient().channels.fetch(
+        getLogChannelForGuild(guildId),
+    );
 
     if (logChannel) {
         logChannel.send('Could not enable security actions.');
