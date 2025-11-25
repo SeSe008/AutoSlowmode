@@ -37,7 +37,7 @@ export function execute(message) {
         message.guild.members
             .fetch(author.id)
             .then((user) => {
-                user.timeout(timeOutLength * 1000, 'Possible spam.');
+                user.timeout(timeOutLength, 'Possible spam.');
             })
             .then(async () => {
                 logger.info(

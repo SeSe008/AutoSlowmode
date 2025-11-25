@@ -29,7 +29,7 @@ export async function execute(interaction) {
         });
     }
 
-    setTimeoutLengthForGuild(guildId, length);
+    setTimeoutLengthForGuild(guildId, length * 1000);
 
     return interaction.reply({
         content: `The timeout length has been set to ${length}s.`,
